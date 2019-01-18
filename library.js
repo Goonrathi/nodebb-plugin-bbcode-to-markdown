@@ -35,6 +35,8 @@ converter.parse = function(postContent) {
 
 		// SomethingAwful Customizations
 		.replace(/(@.+)/gi,'')
+		//emote customization
+		.replace(/\:(.+?)\:/gi,'<img src="emotes\\$1.gif" alt="$1 emote">')
 
 	postContent = parseQuotes(postContent);
 	return postContent
