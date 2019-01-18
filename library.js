@@ -10,14 +10,17 @@ function parseQuotes(content) {
 
 	while(quote = content.match(re)) {
 		quote = quote[0];
-		quoteBlock = quote.replace(re, '@$1 said:\n $2').replace(/[\r\n]/g, '\n>');
+		quoteBlock = quote.replace(re, '$2').replace(/[\r\n]/g, '\n>')
+
+		// SomethingAwful Customizations
+		.replace(/\[video.+?([\d]*).\]([\[a-zA-Z0-9]*)\[\/video\]/gi,"")
 		content = content.replace(quote, quoteBlock);
 	}
 
 	return content;
 }
 
-converter.parse = function(postContent, callback) {
+converter.parse = function(postContent) {
 	postContent = postContent
 		.replace('&#58;', ':')
 		.replace(/\[\S?color[\s\S]*?\]/gi, '')
@@ -26,10 +29,13 @@ converter.parse = function(postContent, callback) {
 		.replace(/\[\S?url:[s\S]*?\]/gi, '')
 		.replace(/\[\S?i:[s\S]*?\]/gi, '*')
 		.replace(/\[quote:[\s\S]*?\]([\s\S]*?)\[\/quote:[\s\S]*?\]/gi, '> $1')
-		.replace(/<!--[\s\S]*?href="([\s\S]*?)">([\s\S]*?)<[\s\S]*?-->/gi, '[$2]($1)');
+		.replace(/<!--[\s\S]*?href="([\s\S]*?)">([\s\S]*?)<[\s\S]*?-->/gi, '[$2]($1)')
+
+		// SomethingAwful Customizations
+		.replace(/(@.+)/gi,'')
 
 	postContent = parseQuotes(postContent);
-	callback(null, postContent);
+	return postContent
 };
 
 module.exports = converter;
