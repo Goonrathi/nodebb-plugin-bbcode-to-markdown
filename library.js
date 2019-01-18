@@ -13,7 +13,7 @@ function parseQuotes(content) {
 		quoteBlock = quote.replace(re, '$2').replace(/[\r\n]/g, '\n>')
 
 		// SomethingAwful Customizations
-		.replace(/\[video.+?([\d]*).\]([\[a-zA-Z0-9]*)\[\/video\]/gi,"")
+		.replace(/\[video.+?([\d]*).\]([\[a-zA-Z0-9]*)\[\/video\]/gi,'\n >[youtube link](https:youtube.com/watch=$2&t=$1)')
 		content = content.replace(quote, quoteBlock);
 	}
 
