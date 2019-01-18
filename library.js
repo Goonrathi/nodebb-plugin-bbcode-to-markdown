@@ -28,7 +28,7 @@ converter.parse = function(postContent) {
 		.replace(/\[\S?color[\s\S]*?\]/gi, '') //colors are removed entirely
 		.replace(/\[\S?b[s\S]*?\]/gi, '**') //bolds
 		.replace(/\[url=(https?:[\s\S]*?)\]([\s\S]*?)\[\/url\]/gi, '[$2]($1)') //urls
-		.replace(/\[\S?url[s\S]*?\]/gi, '') //not sure what this is doing
+		.replace(/\[\S?url[s\S]*?\]/gi, '') // [url]google.com[/url] non-pretty urls
 		.replace(/\[\/?i\]/gi, '*') //italics
 		// .replace(/\[quote:?[\s\S]*?\]([\s\S]*?)\[\/quote:[\s\S]*?\]/gi, '> $1')
 		.replace(/<!--[\s\S]*?href="([\s\S]*?)">([\s\S]*?)<[\s\S]*?-->/gi, '[$2]($1)') //urls
