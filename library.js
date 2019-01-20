@@ -10,7 +10,7 @@ function parseQuotes(content) {
 
 	while(quote = content.match(re)) {
 		quote = quote[0];
-		quoteBlock = quote.replace(re, '<div id="quote">$2</div>')
+		quoteBlock = quote.replace(re, '<div id="quote">$2</div>\n\r')
 		// .replace(/[\r\n]/g, '\n>')
 
 		// SomethingAwful Customizations
@@ -25,10 +25,6 @@ function parseQuotes(content) {
 
 converter.parse = function(postContent) {
 	postContent = postContent
-		.replace('&#58;', ':')
-		.replace('\*', '\\*')
-		.replace('\<', '\\<')
-		.replace('\>', '\\>')
 		.replace(/\[\S?color[\s\S]*?\]/gi, '') //colors are removed entirely
 		.replace(/\[\S?b[s\S]*?\]/gi, '**') //bolds
 		.replace(/\[\/?i\]/gi, '*') //italics
@@ -36,8 +32,8 @@ converter.parse = function(postContent) {
 		.replace(/\[\/u\]/gi, '</u>') //underline close
 		.replace(/\[s\]/gi, '<s>') //strikethrough open
 		.replace(/\[\/s\]/gi, '</s>') //strikethrough close
-		.replace(/\[code\]/gi, '```html') //code close
-		.replace(/\[\/code\]/gi, '```') //code close
+		.replace(/\[code\]/gi, '```\n') //code close
+		.replace(/\[\/code\]/gi, '\n```') //code close
 		// .replace(/\[quote:?[\s\S]*?\]([\s\S]*?)\[\/quote:[\s\S]*?\]/gi, '> $1')
 		
 		//emote customization
@@ -50,9 +46,16 @@ converter.parse = function(postContent) {
 		.replace(/\[url\].+?twitter\.com.+?(\d{10,100})\[\/url\]|twitter\.com.+?(\d{10,100})/gi,'{{< tweet $1 >}}') //twitter embeds
 		.replace(/\[t*img\].+\/([A-z0-9]+\.[[A-z]{3,4})\[\/t*img\]/gi,'<img src="/images/posts/$1">') //img and timg
 		.replace(/\[list\]/gi,'<ul>') //lists open
-		.replace(/\[\*\]([\s\w]+)/gi,'<li>$1</li>') //lists open
+		.replace(/\[\*\](.+)[\r\n]/gi,'<li>$1</li>') //lists open
 		.replace(/\[\/list\]/gi,'</ul>') //lists close
-		// .replace(/./,'')
+
+		//literals
+		.replace('&#58;', ':')
+		.replace(/\*/g, '\\*')
+		.replace(/\</g, '\<')
+		.replace(/\>/g, '\>')
+
+
 		
 
 		//Do urls last to allow for youtube/twitter/SM links to parse first
