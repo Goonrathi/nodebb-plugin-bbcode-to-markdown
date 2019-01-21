@@ -10,12 +10,12 @@ function parseQuotes(content) {
 
 	while(quote = content.match(re)) {
 		quote = quote[0];
-		quoteBlock = quote.replace(re, '\n\n<div id="quote">$2</div><br>')
-		// .replace(/[\r\n]/g, '\n')
+		console.log(quote)
+		// quote = quote.trim();
+		quoteBlock = quote.replace(re, '\n\n<div class="quote">$2</div><br>\n\n')
+		quoteBlock = quoteBlock.replace('">\n\n','">\n')
+		// .replace(/[\r\n]/g, '\n')		
 
-		// SomethingAwful Customizations
-		// (none yet)
-		
 		// finalize block
 		content = content.replace(quote, quoteBlock);
 	}
@@ -25,10 +25,14 @@ function parseQuotes(content) {
 
 converter.parse = function(postContent) {
 	postContent = postContent
-		.replace(/\[\S?color[\s\S]*?\]/gi, '') //colors are removed entirely
+		.replace(/\[\S?color[\s\S]*?\]/gi, '') //color removed entirely
+		.replace(/\[list\]/gi,'<ul>') //list open
+		.replace(/\[\*\](.+)[\r\n]/gi,'<li>$1</li>') //lists open
+		.replace(/\[\/list\]/gi,'</ul>') //list close
 		.replace(/\*/g, '\\*') //literal *
-		.replace(/\[\S?b[s\S]*?\]/gi, '**') //bolds
-		.replace(/\[\/?i\]/gi, '*') //italics
+		.replace(/\[b\]\s*/gi, '**') //bold open
+		.replace(/\s*\[\Sb[s\S]*?\]/gi, '**') //bold close
+		.replace(/\[\/?i\]/gi, '*') //italic
 		.replace(/\[u\]/gi, '<u>') //underline open
 		.replace(/\[\/u\]/gi, '</u>') //underline close
 		.replace(/\[s\]/gi, '<s>') //strikethrough open
@@ -37,24 +41,24 @@ converter.parse = function(postContent) {
 		.replace(/\[\/code\]/gi, '\n```') //code close
 		// .replace(/\[quote:?[\s\S]*?\]([\s\S]*?)\[\/quote:[\s\S]*?\]/gi, '> $1')
 		
-		//emote customization
-		.replace(/\:([a-z0-9]{2,6})\:/gi,'<img src="/images/emotes/$1.gif" alt="$1 emote">')
+		
 
 		
 		// Highly specific to SomethingAwful
-		.replace(/\[video.+?start\=\"([\d]{3,10})\"\]([\[a-zA-Z0-9]*)\[\/video\]/gi,'[youtube link](https:youtube.com/watch=$2&t=$1)') //youtube links with start times
+		.replace(/\[video.+?start\=\"([\d]{3,10})\"\]([\[a-zA-Z0-9]*)\[\/video\]/gi,'[timestamped youtube link ($1)](https:youtube.com/watch=$2&t=$1)') //youtube links with start times
 		.replace(/\[video type\=\"youtube.*?\]([\[a-zA-Z0-9-]*)\[\/video\]/gi,'{{< youtube $1 >}}') //youtube embeds
 		.replace(/\[url\].+?twitter\.com.+?(\d{10,100})\[\/url\]|twitter\.com.+?(\d{10,100})/gi,'{{< tweet $1 >}}') //twitter embeds
-		.replace(/\[t*img\].+\/([A-z0-9]+\.[[A-z]{3,4})\[\/t*img\]/gi,'<img src="/images/posts/$1">') //img and timg
-		.replace(/\[list\]/gi,'<ul>') //lists open
-		.replace(/\[\*\](.+)[\r\n]/gi,'<li>$1</li>') //lists open
-		.replace(/\[\/list\]/gi,'</ul>') //lists close
 
-		//other literals
+
+		// Customizations for MY BLOG
+		.replace(/\:([a-z0-9]{2,8})\:/gi,'<img src="/img/emotes/$1.gif" alt="$1 emote">') //emotes
+		.replace(/\[t*img\]([\w\?\.\:\/\=\&]+)\[\/t*img\]/gi,'<img src="$1">') //img and timg //old: \[t*img\].+\/([A-z0-9]+\.[[A-z]{3,4})\[\/t*img\]
+		
+
+		// Other literals
 		.replace('&#58;', ':')
 		.replace(/\</g, '\<')
 		.replace(/\>/g, '\>')
-
 
 		
 
