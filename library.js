@@ -26,6 +26,7 @@ function parseQuotes(content) {
 converter.parse = function(postContent) {
 	postContent = postContent
 		.replace(/\[\S?color[\s\S]*?\]/gi, '') //colors are removed entirely
+		.replace(/\*/g, '\\*') //literal *
 		.replace(/\[\S?b[s\S]*?\]/gi, '**') //bolds
 		.replace(/\[\/?i\]/gi, '*') //italics
 		.replace(/\[u\]/gi, '<u>') //underline open
@@ -41,17 +42,16 @@ converter.parse = function(postContent) {
 
 		
 		// Highly specific to SomethingAwful
-		.replace(/\[video type\=\"youtube.+?\]([\[a-zA-Z0-9]*)\[\/video\]/gi,'{{< youtube $1 >}}') //youtube embeds
 		.replace(/\[video.+?start\=\"([\d]{3,10})\"\]([\[a-zA-Z0-9]*)\[\/video\]/gi,'[youtube link](https:youtube.com/watch=$2&t=$1)') //youtube links with start times
+		.replace(/\[video type\=\"youtube.*?\]([\[a-zA-Z0-9-]*)\[\/video\]/gi,'{{< youtube $1 >}}') //youtube embeds
 		.replace(/\[url\].+?twitter\.com.+?(\d{10,100})\[\/url\]|twitter\.com.+?(\d{10,100})/gi,'{{< tweet $1 >}}') //twitter embeds
 		.replace(/\[t*img\].+\/([A-z0-9]+\.[[A-z]{3,4})\[\/t*img\]/gi,'<img src="/images/posts/$1">') //img and timg
 		.replace(/\[list\]/gi,'<ul>') //lists open
 		.replace(/\[\*\](.+)[\r\n]/gi,'<li>$1</li>') //lists open
 		.replace(/\[\/list\]/gi,'</ul>') //lists close
 
-		//literals
+		//other literals
 		.replace('&#58;', ':')
-		.replace(/\*/g, '\\*')
 		.replace(/\</g, '\<')
 		.replace(/\>/g, '\>')
 
