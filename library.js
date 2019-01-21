@@ -10,8 +10,8 @@ function parseQuotes(content) {
 
 	while(quote = content.match(re)) {
 		quote = quote[0];
-		quoteBlock = quote.replace(re, '<div id="quote">$2</div>\n\r')
-		// .replace(/[\r\n]/g, '\n>')
+		quoteBlock = quote.replace(re, '\n\n<div id="quote">$2</div><br>')
+		// .replace(/[\r\n]/g, '\n')
 
 		// SomethingAwful Customizations
 		// (none yet)
