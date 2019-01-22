@@ -8,16 +8,15 @@ function parseQuotes(content) {
 	var quote, quoteBlock,
 		re = /\[quote=?["]?([\s\S]*?)["]?\]([\s\S]*?)\[\/quote\]/gi;
 
-	while(quote = content.match(re)) {
+	while (quote = content.match(re)) {
 		quote = quote[0].trim();
 		quoteBlock = quote.replace(re, '\n\n<div class="quote">$2</div><br>\n\n')
 		quoteBlock = quoteBlock.replace('\r','\n').replace(/\>\n\n/gi,'>\n')
 		// .replace(/[\r\n]/g, '\n')
-
+		
 		// finalize block
 		content = content.replace(quote, quoteBlock);
 	}
-
 	return content;
 }
 
@@ -51,7 +50,7 @@ converter.parse = function(postContent) {
 		// Customizations for MY BLOG
 		.replace(/\:([a-z0-9]{1,10})\:/gi,'<img src="/img/emotes/$1.gif" alt="$1 emote">') //emotes
 		.replace(/\[t*img\]([\w\?\.\:\/\=\&]+)\[\/t*img\]/gi,'<img src="$1" alt="embedded external image">') //img and timg //old: \[t*img\].+\/([A-z0-9]+\.[[A-z]{3,4})\[\/t*img\]
-		
+		//consider a div class for timg items to keep them small
 
 		// Other literals
 		.replace('&#58;', ':')
