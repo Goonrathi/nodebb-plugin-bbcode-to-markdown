@@ -1,7 +1,7 @@
-# NodeBB BBCode to Markdown
+# sabbcode-to-markdown-filter
 
-Useful post-migration of a phpBB2 forum to NodeBB.
+Useful for moving Something Awful posts to markdown format. Recomend using in conjunction with [akhoury/bbcode-to-markdown](https://github.com/akhoury/bbcode-to-markdown)
 
 ## Installation
 
-    npm install nodebb-plugin-bbcode-to-markdown
+    npm install Goonrathi/sabbcode-to-markdown-filter
